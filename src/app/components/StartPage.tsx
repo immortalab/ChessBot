@@ -27,12 +27,12 @@ const StartPage = () => {
   return <div className="StartPage">
     <h1>Chess</h1>
     <div className="inside">
-      <h3>Create new game with side</h3>
-      <button onClick={() => handleStartGame('white')}>White</button>
+      <h3>За кого будешь играть?</h3>
+      <button onClick={() => handleStartGame('white')}>Ариец</button>
       <h3>or</h3>
-      <button onClick={() => handleStartGame('black')}>Black</button>
+      <button onClick={() => handleStartGame('black')}>Чёрный властелин</button>
       <h3>or</h3>
-      <button onClick={() => handleStartGame('random')}>Random</button>
+      <button onClick={() => handleStartGame('random')}>Нагну за любых</button>
     </div>
   </div>
 };
