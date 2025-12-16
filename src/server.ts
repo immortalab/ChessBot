@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { app, httpServer, io } from "./core";
 import bot from './bot';
 import { get_game, create_game, join_game, make_move } from "./api";
