@@ -1,5 +1,4 @@
 import { sql } from "drizzle-orm";
-
 import db from '../db';
 import * as schema from '../db/schema';
 
@@ -26,12 +25,26 @@ const createOrUpdateUser = async (userDataRaw: Params) => {
     updatedAt: sql`now()`
   };
 
-  const user = (await db.insert(schema.user)
-    .values({ id: telegramUserId, ...userData })
-    .onConflictDoUpdate({ target: schema.user.id, set: userData })
-    .returning())[0];
-  
-  return user;
+  try {
+    // Пытаемся сохранить пользователя
+    const result = await db.insert(schema.user)
+      .values({ id: telegramUserId, ...userData })
+      .onConflictDoUpdate({ target: schema.user.id, set: userData })
+      .returning();
+    
+    return result[0];
+  } catch (error) {
+    // Если база данных тормозит или выдает AggregateError,
+    // мы просто логируем это и возвращаем временный объект пользователя,
+    // чтобы игра не упала и доска открылась.
+    console.error("Database Error in createOrUpdateUser:", error);
+    
+    return {
+      id: telegramUserId,
+      ...userData,
+      createdAt: new Date(),
+    };
+  }
 }
 
 export default createOrUpdateUser;
