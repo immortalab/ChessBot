@@ -22,10 +22,10 @@ const db = drizzle(client, { schema });
 
 console.log('Connecting to database using DATABASE_URL...');
 
-/* Мы временно отключаем миграции, чтобы избежать ошибки AggregateError на Render
+// Мы временно отключаем миграции, чтобы избежать ошибки AggregateError на Render
   console.log("Run migrations...");
   migrate(db, { migrationsFolder: "migrations" }).then(() =>{
     console.log("Migrations applied!")
   });
-*/
+
 export default db;
