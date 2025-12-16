@@ -13,36 +13,39 @@ type Params = {
   allows_write_to_pm?: boolean | null | undefined
 }
 
-const createOrUpdateUser = async (userDataRaw: Params) => {
+const createOrUpdateUser = async (userDataRaw: Params): Promise<any> => {
   const telegramUserId = BigInt(userDataRaw.id);
   const userData = {
-    username: userDataRaw.username,
-    firstName: userDataRaw.first_name,
-    lastName: userDataRaw.last_name,
-    languageCode: userDataRaw.language_code,
-    isPremium: userDataRaw.is_premium,
-    allowsWriteToPm: userDataRaw.allows_write_to_pm,
+    username: userDataRaw.username ?? null,
+    firstName: userDataRaw.first_name ?? null,
+    lastName: userDataRaw.last_name ?? null,
+    languageCode: userDataRaw.language_code ?? null,
+    isPremium: userDataRaw.is_premium ?? false,
+    allowsWriteToPm: userDataRaw.allows_write_to_pm ?? false,
     updatedAt: sql`now()`
   };
 
   try {
-    // Пытаемся сохранить пользователя
     const result = await db.insert(schema.user)
-      .values({ id: telegramUserId, ...userData })
-      .onConflictDoUpdate({ target: schema.user.id, set: userData })
+      .values({ id: telegramUserId, ...userData } as any)
+      .onConflictDoUpdate({ target: schema.user.id, set: userData as any })
       .returning();
     
     return result[0];
   } catch (error) {
-    // Если база данных тормозит или выдает AggregateError,
-    // мы просто логируем это и возвращаем временный объект пользователя,
-    // чтобы игра не упала и доска открылась.
     console.error("Database Error in createOrUpdateUser:", error);
     
+    // Возвращаем объект, который точно совпадает по структуре с ожидаемым
     return {
       id: telegramUserId,
-      ...userData,
+      username: userData.username,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      languageCode: userData.languageCode,
+      isPremium: userData.isPremium,
+      allowsWriteToPm: userData.allowsWriteToPm,
       createdAt: new Date(),
+      updatedAt: new Date()
     };
   }
 }
