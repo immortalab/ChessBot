@@ -6,21 +6,21 @@ import * as schema from './schema';
 
 const { Pool } = pg;
 
+// Используем напрямую DATABASE_URL из настроек Render
 const config : any = {
-  connectionString: `postgres://${process.env.DB_USER || "postgres"}:${process.env.DB_PASS}@${process.env.DB_HOST || "localhost"}:${process.env.DB_PORT || "5432"}/${process.env.DB_NAME || "chess"}${process.env.DB_SSLMODE ? '?sslmode=require' : ''}`,
+  connectionString: process.env.DATABASE_URL,
 }
 
-if (process.env.DB_SSLMODE) {
-  config.ssl = {
-    rejectUnauthorized: false
-  };
-}
+// Включаем SSL, так как Neon требует защищенного соединения
+config.ssl = {
+  rejectUnauthorized: false
+};
  
 const client = new Pool(config);
 
 const db = drizzle(client, { schema });
 
-console.log('Conncting to database...');
+console.log('Connecting to database using DATABASE_URL...');
 
 /* Мы временно отключаем миграции, чтобы избежать ошибки AggregateError на Render
   console.log("Run migrations...");
