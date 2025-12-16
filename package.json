@@ -4,6 +4,7 @@
   "author": "Pavel Kozlov (https://pkozlov.com/)",
   "private": true,
   "dependencies": {
+    "cors": "^2.8.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -33,6 +34,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.14",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/crypto-js": "^4.1.2",
     "@types/react-copy-to-clipboard": "^5.0.5",
