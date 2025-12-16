@@ -29,10 +29,10 @@ const StartPage = () => {
     <div className="inside">
       <h3>За кого будешь играть?</h3>
       <button onClick={() => handleStartGame('white')}>Ариец</button>
-      <h3>or</h3>
+      <h3>или</h3>
       <button onClick={() => handleStartGame('black')}>Чёрный властелин</button>
-      <h3>or</h3>
-      <button onClick={() => handleStartGame('random')}>Нагну за любых</button>
+      <h3>а может</h3>
+      <button onClick={() => handleStartGame('random')}>Нагнёшь за любых</button>
     </div>
   </div>
 };
